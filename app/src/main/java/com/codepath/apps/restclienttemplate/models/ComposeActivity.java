@@ -73,12 +73,12 @@ public class ComposeActivity extends AppCompatActivity {
                         // data.putExtra(USER_KEY, tweet.user);
                         setResult(RESULT_OK, data); // set result code and bundle data for response
 
-                        finish();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                     // closes the activity, pass data to parent
+                    finish();
+
 
                 }
 
