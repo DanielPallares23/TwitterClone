@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -37,6 +39,12 @@ public class ComposeActivity extends AppCompatActivity {
     Context context;
 
 
+
+    // ATTEMPT
+    TextView mTextView;
+    EditText mEditText;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +56,27 @@ public class ComposeActivity extends AppCompatActivity {
         // Place User on Screen
         setUserProfile();
 
+        // attempt
+        // ATTEMPT
+        mTextView = (TextView) findViewById(R.id.tvCharacterCount);
+        mEditText = (EditText) findViewById(R.id.et_composeTweet);
+
+        TextWatcher mTextEditorWatcher = new TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //This sets a textview to the current length
+                mTextView.setText(String.valueOf(140 - s.length()));
+                if(s.length() > 140) {
+                    mEditText.setText(mEditText.getText().toString().substring(0,140));
+                }
+            }
+
+            public void afterTextChanged(Editable s) {
+            }
+        };
+        mEditText.addTextChangedListener(mTextEditorWatcher);
 
     }
 

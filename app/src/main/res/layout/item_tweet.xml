@@ -68,7 +68,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_margin="5dp"
-            android:background="@drawable/ic_vector_compose"
+            android:background="@mipmap/ic_reply"
             android:padding="5dp" />
 
         <Button

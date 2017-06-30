@@ -6,22 +6,6 @@
     android:layout_height="match_parent"
     tools:context="com.codepath.apps.restclienttemplate.models.ComposeActivity">
 
-    <EditText
-        android:id="@+id/et_composeTweet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/ivProfileImage"
-        android:width="60dp"
-        android:onClick="onEditTweet"
-        android:text="What's happening?"
-        android:textAlignment="textStart"
-        android:textColor="@color/medium_gray"
-        android:textColorLink="@color/twitter_blue"
-        tools:layout_editor_absoluteX="-1dp"
-        tools:layout_editor_absoluteY="1dp"
-        android:layout_above="@+id/bt_Tweet" />
 
     <ImageView
         android:id="@+id/ivProfileImage"
@@ -83,4 +67,23 @@
         android:layout_marginRight="10dp"
         android:layout_toStartOf="@+id/bt_Tweet"
         android:text="140" />
+
+
+    <EditText
+        android:id="@+id/et_composeTweet"
+        android:layout_width="402dp"
+        android:layout_height="151dp"
+        android:layout_above="@+id/bt_Tweet"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/ivProfileImage"
+        android:width="60dp"
+        android:onClick="onEditTweet"
+        android:text="What's happening?"
+        android:textAlignment="textStart"
+        android:textColor="@color/medium_gray"
+        android:textColorLink="@color/twitter_blue"
+        tools:layout_editor_absoluteX="-1dp"
+        tools:layout_editor_absoluteY="1dp" />
+
 </RelativeLayout>
