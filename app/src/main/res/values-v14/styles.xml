@@ -9,6 +9,7 @@
         <!-- API 14 theme customizations can go here. -->
         <item name="colorPrimary">@android:color/holo_blue_light</item>
         <item name="android:textColorPrimaryInverse">@color/twitter_blue</item>
+        <item name="colorAccent">@color/twitter_blue</item>
     </style>
 
 </resources>
