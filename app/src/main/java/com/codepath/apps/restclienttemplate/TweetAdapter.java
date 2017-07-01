@@ -2,17 +2,26 @@ package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.restclienttemplate.models.ParseRelativeDate;
 import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
+
+import cz.msebera.android.httpclient.Header;
 
 /**
  * Created by danielpb on 6/26/17.
@@ -22,6 +31,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
 
     private List<Tweet> mTweets;
     Context context;
+    TwitterClient client;
+
      // pass in the Tweets array in the constructor
 public TweetAdapter(List<Tweet>tweets) {
     mTweets = tweets;
@@ -35,6 +46,7 @@ public TweetAdapter(List<Tweet>tweets) {
 
         View tweetView = inflater.inflate(R.layout.item_tweet, parent, false);
         ViewHolder viewHolder = new ViewHolder(tweetView);
+        client = new TwitterClient(context);
         return viewHolder;
 
     }
@@ -51,12 +63,17 @@ public TweetAdapter(List<Tweet>tweets) {
         holder.tvBody.setText(tweet.body);
         holder.tvScreenName.setText("@" + tweet.user.screenName);
         holder.tvTimeStamp.setText(ParseRelativeDate.getRelativeTimeAgo(tweet.createdAt));
+        holder.tvRetweets.setText("" + tweet.retweets);
+        holder.tvFavorites.setText("" + tweet.favorites);
+        holder.onClick(holder.btFavorite);
 
 
         Glide.with(context).load(tweet.user.profileImageUrl).into(holder.ivProfileImage);
 
 
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -65,12 +82,16 @@ public TweetAdapter(List<Tweet>tweets) {
 
     // create the ViewHolder class
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView ivProfileImage;
         public TextView tvUsername;
         public TextView tvBody;
         public TextView tvScreenName;
         public TextView tvTimeStamp;
+        public TextView tvRetweets;
+        public TextView tvFavorites;
+        public Button btFavorite;
+
 
         public ViewHolder (View itemView) {
             super(itemView);
@@ -82,7 +103,51 @@ public TweetAdapter(List<Tweet>tweets) {
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
             tvScreenName = (TextView) itemView.findViewById(R.id.tvScreenName);
             tvTimeStamp = (TextView) itemView.findViewById(R.id.tvTimeStamp);
+            tvRetweets = (TextView) itemView.findViewById(R.id.tv_Retweets);
+            tvFavorites = (TextView) itemView.findViewById(R.id.tv_Favorites);
+            btFavorite = (Button) itemView.findViewById(R.id.bt_Favorite);
 
+        }
+
+
+        public void onClick(View v) {
+            Log.d("Working","onClick");
+
+            btFavorite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        //Toast.makeText(context,String.valueOf(mTweets.get(position).uid), Toast.LENGTH_LONG).show();
+                        final Tweet tweet = mTweets.get(position);
+                        //tweet.favorites += 1;
+                        client.favoriteTweet(tweet.uid, new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                //Toast.makeText(context, "onSuccess", Toast.LENGTH_LONG).show();
+                                Tweet newTweet = null;
+                                try {
+                                    newTweet = Tweet.fromJSON(response);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                if (newTweet != null) {
+                                    tvFavorites.setText(String.valueOf(newTweet.favorites));
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                                Toast.makeText(context, "onFailure", Toast.LENGTH_LONG).show();
+
+                                super.onFailure(statusCode, headers, responseString, throwable);
+                            }
+                        });
+
+
+                    }
+                }
+            });
         }
     }
 }

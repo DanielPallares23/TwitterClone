@@ -1,6 +1,8 @@
 package com.codepath.apps.restclienttemplate.models;
+
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,6 +20,8 @@ public class Tweet implements Parcelable {
     public long uid; // database ID for the tweet
     public User user;
     public String createdAt;
+    public int retweets;
+    public int favorites;
 
     public Tweet() {
 
@@ -32,6 +36,9 @@ public class Tweet implements Parcelable {
         tweet.uid = jsonObject.getLong("id");
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
+        tweet.retweets = jsonObject.getInt("retweet_count");
+        tweet.favorites = jsonObject.getInt("favorite_count");
+        Log.d("JSON: ",jsonObject.toString(),null);
         return tweet;
 
     }

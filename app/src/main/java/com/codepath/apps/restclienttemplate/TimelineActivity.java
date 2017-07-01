@@ -50,6 +50,7 @@ public class TimelineActivity extends AppCompatActivity {
         populateTimeline();
     }
 
+
     public void populateTimeline() {
 
         client.getHomeTimeline(new JsonHttpResponseHandler() {
@@ -60,7 +61,7 @@ public class TimelineActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                Toast.makeText(TimelineActivity.this, "Populate Timeline", Toast.LENGTH_LONG).show();
+            //    Toast.makeText(TimelineActivity.this, "Populate Timeline", Toast.LENGTH_LONG).show();
     //            Log.d("Twitter Client", response.toString());
                 // iterate through the JSON array
                 // for each entry, deserialize the JSON object
