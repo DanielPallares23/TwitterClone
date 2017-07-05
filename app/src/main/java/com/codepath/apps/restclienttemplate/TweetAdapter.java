@@ -30,12 +30,19 @@ import cz.msebera.android.httpclient.Header;
 public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
 
     private List<Tweet> mTweets;
+    private TweetAdapterListener mListener;
     Context context;
+
+    // define an interface required by the viewholder
+    public interface TweetAdapterListener {
+        public void onItemSelected (View view, int position);
+    }
     TwitterClient client;
 
      // pass in the Tweets array in the constructor
-public TweetAdapter(List<Tweet>tweets) {
+public TweetAdapter(List<Tweet>tweets, TweetAdapterListener listener) {
     mTweets = tweets;
+    mListener = listener;
 }
     // for each row, inflate the layout and cache references into viewHolder
 
@@ -93,7 +100,7 @@ public TweetAdapter(List<Tweet>tweets) {
         public Button btFavorite;
 
 
-        public ViewHolder (View itemView) {
+        public ViewHolder (final View itemView) {
             super(itemView);
 
             // perform findViewById lookups
@@ -106,6 +113,19 @@ public TweetAdapter(List<Tweet>tweets) {
             tvRetweets = (TextView) itemView.findViewById(R.id.tv_Retweets);
             tvFavorites = (TextView) itemView.findViewById(R.id.tv_Favorites);
             btFavorite = (Button) itemView.findViewById(R.id.bt_Favorite);
+
+            // handle row click event
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mListener != null) {
+                        // get the position of this row element
+                        int position = getAdapterPosition();
+                        // fire the listener callback
+                        mListener.onItemSelected(itemView, position);// POSSIBLE ERR HERE
+                    }
+                }
+            });
 
         }
 

@@ -22,12 +22,16 @@ import java.util.ArrayList;
  * Created by danielpb on 7/3/17.
  */
 
-public class TweetsListFragment extends Fragment {
+public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAdapterListener{
 
     TweetAdapter tweetdAdapter;
     ArrayList<Tweet> tweets;
     RecyclerView rvTweets;
 
+    public interface TweetSelectedListener{
+        // handle tweet selection
+        public void onTweetSelected(Tweet tweet);
+    }
     // onCreate implementation
     @Nullable
     @Override
@@ -40,7 +44,7 @@ public class TweetsListFragment extends Fragment {
         // init the arraylist (data source)
         tweets = new ArrayList<>();
         // construct the adapter from this datasource
-        tweetdAdapter = new TweetAdapter(tweets);
+        tweetdAdapter = new TweetAdapter(tweets, this);
         // RecyclerView setup (layout manager, use adapter)
         rvTweets.setLayoutManager(new LinearLayoutManager(getContext()));
         // set the adapter
@@ -68,5 +72,12 @@ public class TweetsListFragment extends Fragment {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }*/
+    }
+
+    @Override
+    public void onItemSelected(View view, int position) {
+        Tweet tweet = tweets.get(position);
+        //
+        ((TweetSelectedListener)getActivity()).onTweetSelected(tweet);
     }
 }
