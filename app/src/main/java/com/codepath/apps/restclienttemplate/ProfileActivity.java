@@ -27,6 +27,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         // create the user fragment
         String screenName = getIntent().getStringExtra("screen_name");
+
         UserTimelineFragment userTimelineFragment = new UserTimelineFragment().newInstance(screenName);
         // display the user fragment inside the container (dynamically)
 
@@ -38,22 +39,37 @@ public class ProfileActivity extends AppCompatActivity {
         ft.commit();
 
         client = TwitterApp.getRestClient();
-        client.getUserInfo(new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                try {
-                    // deserialize the user object
-                    User user = User.fromJSON(response);
-                    // set the title of the action bar based on user information
-                    getSupportActionBar().setTitle(user.screenName);
-                    // populate the user headline
-                    populateUserHeadline(user);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+        if (screenName == null) {
+            client.getUserInfo(new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    try {
+                        // deserialize the user object
+                        User user = User.fromJSON(response);
+                        // set the title of the action bar based on user information
+                        getSupportActionBar().setTitle(user.screenName);
+                        // populate the user headline
+                        populateUserHeadline(user);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
-            }
-        });
+                }
+            });
+        } else {
+            client.getProfile(screenName, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    try {
+                        User user = User.fromJSON(response);
+                        getSupportActionBar().setTitle(user.screenName);
+                        populateUserHeadline(user);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
 
     }
 

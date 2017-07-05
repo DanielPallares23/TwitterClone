@@ -22,16 +22,18 @@ import java.util.ArrayList;
  * Created by danielpb on 7/3/17.
  */
 
-public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAdapterListener{
+public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAdapterListener {
 
     TweetAdapter tweetdAdapter;
     ArrayList<Tweet> tweets;
     RecyclerView rvTweets;
 
-    public interface TweetSelectedListener{
+
+    public interface TweetSelectedListener {
         // handle tweet selection
         public void onTweetSelected(Tweet tweet);
     }
+
     // onCreate implementation
     @Nullable
     @Override
@@ -55,7 +57,7 @@ public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAd
     public void addItems(JSONArray response) {
 
         try {
-            for(int i = 0; i < response.length(); i++) {
+            for (int i = 0; i < response.length(); i++) {
                 Tweet tweet = Tweet.fromJSON(response.getJSONObject(i));
                 tweets.add(tweet);
                 tweetdAdapter.notifyItemInserted(tweets.size() - 1);
@@ -64,20 +66,11 @@ public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAd
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        /* try {
-                        Tweet tweet = Tweet.fromJSON(response.getJSONObject(i));
-                        tweets.add(tweet);
-                        tweetdAdapter.notifyItemInserted(tweets.size() - 1);
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }*/
     }
 
     @Override
     public void onItemSelected(View view, int position) {
         Tweet tweet = tweets.get(position);
-        //
-        ((TweetSelectedListener)getActivity()).onTweetSelected(tweet);
+        ((TweetSelectedListener) getActivity()).onTweetSelected(tweet);
     }
 }

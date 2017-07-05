@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,7 +28,7 @@ import cz.msebera.android.httpclient.Header;
  * Created by danielpb on 6/26/17.
  */
 
-public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
+public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> {
 
     private List<Tweet> mTweets;
     private TweetAdapterListener mListener;
@@ -35,15 +36,16 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
 
     // define an interface required by the viewholder
     public interface TweetAdapterListener {
-        public void onItemSelected (View view, int position);
+        public void onItemSelected(View view, int position);
     }
+
     TwitterClient client;
 
-     // pass in the Tweets array in the constructor
-public TweetAdapter(List<Tweet>tweets, TweetAdapterListener listener) {
-    mTweets = tweets;
-    mListener = listener;
-}
+    // pass in the Tweets array in the constructor
+    public TweetAdapter(List<Tweet> tweets, TweetAdapterListener listener) {
+        mTweets = tweets;
+        mListener = listener;
+    }
     // for each row, inflate the layout and cache references into viewHolder
 
     @Override
@@ -81,7 +83,6 @@ public TweetAdapter(List<Tweet>tweets, TweetAdapterListener listener) {
     }
 
 
-
     @Override
     public int getItemCount() {
         return mTweets.size();
@@ -89,7 +90,7 @@ public TweetAdapter(List<Tweet>tweets, TweetAdapterListener listener) {
 
     // create the ViewHolder class
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView ivProfileImage;
         public TextView tvUsername;
         public TextView tvBody;
@@ -100,7 +101,7 @@ public TweetAdapter(List<Tweet>tweets, TweetAdapterListener listener) {
         public Button btFavorite;
 
 
-        public ViewHolder (final View itemView) {
+        public ViewHolder(final View itemView) {
             super(itemView);
 
             // perform findViewById lookups
@@ -118,7 +119,7 @@ public TweetAdapter(List<Tweet>tweets, TweetAdapterListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(mListener != null) {
+                    if (mListener != null) {
                         // get the position of this row element
                         int position = getAdapterPosition();
                         // fire the listener callback
@@ -131,14 +132,31 @@ public TweetAdapter(List<Tweet>tweets, TweetAdapterListener listener) {
 
 
         public void onClick(View v) {
-            Log.d("Working","onClick");
+            Log.d("Working", "onClick");
+            ivProfileImage.setOnClickListener(this);
+            btFavorite.setOnClickListener(this);
+
+            switch (v.getId()) {
+                default:
+                    //Toast.makeText(v.getContext(), "You have attempted to access an unsupported feature", Toast.LENGTH_LONG).show();
+                    break;
+                case R.id.ivProfileImage:
+                    Toast.makeText(v.getContext(), "You just clicked the image", Toast.LENGTH_LONG).show();
+                    Intent i = new Intent(context, ProfileActivity.class);
+                    i.putExtra("screen_name", getScreenName());
+                    context.startActivity(i);
+                    break;
+            }
+
 
             btFavorite.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Toast.makeText(v.getContext(), "You have attempted to favorite", Toast.LENGTH_LONG).show();
+
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
-                        //Toast.makeText(context,String.valueOf(mTweets.get(position).uid), Toast.LENGTH_LONG).show();
+                        //Toast.makeText(context, String.valueOf(mTweets.get(position).uid), Toast.LENGTH_LONG).show();
                         final Tweet tweet = mTweets.get(position);
                         //tweet.favorites += 1;
                         client.favoriteTweet(tweet.uid, new JsonHttpResponseHandler() {
@@ -168,6 +186,18 @@ public TweetAdapter(List<Tweet>tweets, TweetAdapterListener listener) {
                     }
                 }
             });
+
+
+        }
+
+
+        public String getScreenName() {
+            int position = getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION) {
+                final Tweet tweet = mTweets.get(position);
+                return tweet.user.screenName;
+            }
+            return "";
         }
     }
 }

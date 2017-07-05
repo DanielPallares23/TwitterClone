@@ -21,51 +21,59 @@ import com.loopj.android.http.RequestParams;
  * 
  */
 public class TwitterClient extends OAuthBaseClient {
-	public static final BaseApi REST_API_INSTANCE = TwitterApi.instance(); // Change this
-	public static final String REST_URL = "https://api.twitter.com/1.1"; // Change this, base API URL
-	public static final String REST_CONSUMER_KEY = "oR3PYacyvJlHN0tTu3S3Dlr2r";       // Change this
-	public static final String REST_CONSUMER_SECRET = "meW6TNITJhYY69fRpRWXd3pKRwtaaMOcej21Ln7aDYYYhH9fd0"; // Change this
+    public static final BaseApi REST_API_INSTANCE = TwitterApi.instance(); // Change this
+    public static final String REST_URL = "https://api.twitter.com/1.1"; // Change this, base API URL
+    public static final String REST_CONSUMER_KEY = "oR3PYacyvJlHN0tTu3S3Dlr2r";       // Change this
+    public static final String REST_CONSUMER_SECRET = "meW6TNITJhYY69fRpRWXd3pKRwtaaMOcej21Ln7aDYYYhH9fd0"; // Change this
 
-	// Landing page to indicate the OAuth flow worked in case Chrome for Android 25+ blocks navigation back to the app.
-	public static final String FALLBACK_URL = "https://codepath.github.io/android-rest-client-template/success.html";
+    // Landing page to indicate the OAuth flow worked in case Chrome for Android 25+ blocks navigation back to the app.
+    public static final String FALLBACK_URL = "https://codepath.github.io/android-rest-client-template/success.html";
 
-	// See https://developer.chrome.com/multidevice/android/intents
-	public static final String REST_CALLBACK_URL_TEMPLATE = "intent://%s#Intent;action=android.intent.action.VIEW;scheme=%s;package=%s;S.browser_fallback_url=%s;end";
+    // See https://developer.chrome.com/multidevice/android/intents
+    public static final String REST_CALLBACK_URL_TEMPLATE = "intent://%s#Intent;action=android.intent.action.VIEW;scheme=%s;package=%s;S.browser_fallback_url=%s;end";
 
-	public TwitterClient(Context context) {
-		super(context, REST_API_INSTANCE,
-				REST_URL,
-				REST_CONSUMER_KEY,
-				REST_CONSUMER_SECRET,
-				String.format(REST_CALLBACK_URL_TEMPLATE, context.getString(R.string.intent_host),
-						context.getString(R.string.intent_scheme), context.getPackageName(), FALLBACK_URL));
-	}
-	// CHANGE THIS
-	// DEFINE METHODS for different API endpoints here
-	public void getHomeTimeline(AsyncHttpResponseHandler handler) {
-		String apiUrl = getApiUrl("statuses/home_timeline.json");
-		// Can specify query string params directly or through RequestParams.
-		RequestParams params = new RequestParams();
-		params.put("count", 25);
-		params.put("since_id", 1);
-		client.get(apiUrl, params, handler);
-	}
+    public TwitterClient(Context context) {
+        super(context, REST_API_INSTANCE,
+                REST_URL,
+                REST_CONSUMER_KEY,
+                REST_CONSUMER_SECRET,
+                String.format(REST_CALLBACK_URL_TEMPLATE, context.getString(R.string.intent_host),
+                        context.getString(R.string.intent_scheme), context.getPackageName(), FALLBACK_URL));
+    }
 
-	public void getMentionsTimeline(AsyncHttpResponseHandler handler) {
-		String apiUrl = getApiUrl("statuses/mentions_timeline.json");
-		// Can specify query string params directly or through RequestParams.
-		RequestParams params = new RequestParams();
-		params.put("count", 25);
-		params.put("since_id", 1);
-		client.get(apiUrl, params, handler);
-	}
+    // CHANGE THIS
+    // DEFINE METHODS for different API endpoints here
+    public void getHomeTimeline(AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("statuses/home_timeline.json");
+        // Can specify query string params directly or through RequestParams.
+        RequestParams params = new RequestParams();
+        params.put("count", 25);
+        params.put("since_id", 1);
+        client.get(apiUrl, params, handler);
+    }
+
+    public void getMentionsTimeline(AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("statuses/mentions_timeline.json");
+        // Can specify query string params directly or through RequestParams.
+        RequestParams params = new RequestParams();
+        params.put("count", 25);
+        params.put("since_id", 1);
+        client.get(apiUrl, params, handler);
+    }
 
     public void getUserTimeline(String screenName, AsyncHttpResponseHandler handler) {
         String apiUrl = getApiUrl("statuses/user_timeline.json");
         // Can specify query string params directly or through RequestParams.
         RequestParams params = new RequestParams();
-        params.put("screen_name",screenName);
+        params.put("screen_name", screenName);
         params.put("count", 25);
+        client.get(apiUrl, params, handler);
+    }
+
+    public void getProfile(String screenName, AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("users/show.json");
+        RequestParams params = new RequestParams();
+        params.put("screen_name", screenName);
         client.get(apiUrl, params, handler);
     }
 
@@ -78,7 +86,7 @@ public class TwitterClient extends OAuthBaseClient {
 
 
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
-	 * 	  i.e getApiUrl("statuses/home_timeline.json");
+     * 	  i.e getApiUrl("statuses/home_timeline.json");
 	 * 2. Define the parameters to pass to the request (query or body)
 	 *    i.e RequestParams params = new RequestParams("foo", "bar");
 	 * 3. Define the request method and make a call to the client
@@ -86,31 +94,31 @@ public class TwitterClient extends OAuthBaseClient {
 	 *    i.e client.post(apiUrl, params, handler);
 	 */
 
-	public void sendTweet(String message, AsyncHttpResponseHandler handler) {
-		String apiUrl = getApiUrl("statuses/update.json");
-		// Can specify query string params directly or through RequestParams.
-		RequestParams params = new RequestParams();
-		params.put("status", message);
-		client.post(apiUrl, params, handler);
-	}
+    public void sendTweet(String message, AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("statuses/update.json");
+        // Can specify query string params directly or through RequestParams.
+        RequestParams params = new RequestParams();
+        params.put("status", message);
+        client.post(apiUrl, params, handler);
+    }
 
-	public void getScreenName(AsyncHttpResponseHandler handler) {
-		String apiUrl = getApiUrl("account/settings.json");
-		client.get(apiUrl, handler);
-	}
+    public void getScreenName(AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("account/settings.json");
+        client.get(apiUrl, handler);
+    }
 
-	public void getProfileDetails(String name, AsyncHttpResponseHandler handler) {
+    public void getProfileDetails(String name, AsyncHttpResponseHandler handler) {
         String apiUrl = getApiUrl("users/show.json");
         RequestParams params = new RequestParams();
         params.put("screen_name", name);
-        client.get(apiUrl,params, handler);
+        client.get(apiUrl, params, handler);
     }
 
-	public void favoriteTweet(long id, AsyncHttpResponseHandler handler) {
-		String apiUrl = getApiUrl("favorites/create.json");
-		// Can specify query string params directly or through RequestParams.
-		RequestParams params = new RequestParams();
-		params.put("id", id);
-		client.post(apiUrl, params, handler);
-	}
+    public void favoriteTweet(long id, AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("favorites/create.json");
+        // Can specify query string params directly or through RequestParams.
+        RequestParams params = new RequestParams();
+        params.put("id", id);
+        client.post(apiUrl, params, handler);
+    }
 }

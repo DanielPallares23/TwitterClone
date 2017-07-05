@@ -22,7 +22,7 @@ public class User implements Parcelable {
     public int followingCount;
 
     // deserialize the JSON
-    public static User fromJSON(JSONObject json) throws JSONException{
+    public static User fromJSON(JSONObject json) throws JSONException {
         User user = new User();
 
         // extract and fill the values
