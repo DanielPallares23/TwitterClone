@@ -134,14 +134,12 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         public void onClick(View v) {
             Log.d("Working", "onClick");
             ivProfileImage.setOnClickListener(this);
-            btFavorite.setOnClickListener(this);
 
             switch (v.getId()) {
                 default:
                     //Toast.makeText(v.getContext(), "You have attempted to access an unsupported feature", Toast.LENGTH_LONG).show();
                     break;
                 case R.id.ivProfileImage:
-                    Toast.makeText(v.getContext(), "You just clicked the image", Toast.LENGTH_LONG).show();
                     Intent i = new Intent(context, ProfileActivity.class);
                     i.putExtra("screen_name", getScreenName());
                     context.startActivity(i);
@@ -152,7 +150,6 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             btFavorite.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(v.getContext(), "You have attempted to favorite", Toast.LENGTH_LONG).show();
 
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {

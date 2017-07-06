@@ -39,7 +39,6 @@ public class ComposeActivity extends AppCompatActivity {
     Context context;
 
 
-
     // ATTEMPT
     TextView mTextView;
     EditText mEditText;
@@ -68,8 +67,8 @@ public class ComposeActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //This sets a textview to the current length
                 mTextView.setText(String.valueOf(140 - s.length()));
-                if(s.length() > 140) {
-                    mEditText.setText(mEditText.getText().toString().substring(0,140));
+                if (s.length() > 140) {
+                    mEditText.setText(mEditText.getText().toString().substring(0, 140));
                 }
             }
 
@@ -80,12 +79,12 @@ public class ComposeActivity extends AppCompatActivity {
 
     }
 
-    public void onCancel(View view){
+    public void onCancel(View view) {
         finish();
     }
 
     public void onSubmit(View v) {
-        if(hasEdited) {
+        if (hasEdited) {
             EditText etName = (EditText) findViewById(R.id.et_composeTweet);
             final String message = etName.getText().toString();
             TwitterClient twitterClient = new TwitterClient(this);
@@ -124,7 +123,7 @@ public class ComposeActivity extends AppCompatActivity {
         }
     }
 
-    public void setUserProfile(){
+    public void setUserProfile() {
         final TwitterClient client = TwitterApp.getRestClient();
         client.getScreenName(new JsonHttpResponseHandler() {
             @Override
@@ -133,16 +132,16 @@ public class ComposeActivity extends AppCompatActivity {
                     screenName = response.get("screen_name").toString();
                     Log.d("Twitter Client", screenName);
                 } catch (JSONException e) {
-                    Log.d("Twitter Client",response.toString());
+                    Log.d("Twitter Client", response.toString());
 
                     e.printStackTrace();
                 }
 
                 final TextView tvScreenName = (TextView) findViewById(R.id.tvScreenName);
-                Log.d("Setting",screenName);
+                Log.d("Setting", screenName);
                 tvScreenName.setText("@" + screenName, null);
 
-                client.getProfileDetails(screenName, new JsonHttpResponseHandler(){
+                client.getProfileDetails(screenName, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         try {
@@ -152,7 +151,7 @@ public class ComposeActivity extends AppCompatActivity {
                             profileImageUrl = response.get("profile_image_url").toString();
                             Log.d("Twitter Client", profileImageUrl);
                         } catch (JSONException e) {
-                            Log.d("Twitter Client","Failed");
+                            Log.d("Twitter Client", "Failed");
 
                             e.printStackTrace();
                         }
@@ -164,6 +163,7 @@ public class ComposeActivity extends AppCompatActivity {
                         context = ivProfileImage.getContext();
                         Glide.with(context).load(profileImageUrl).into(ivProfileImage);
                     }
+
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                         Log.d("Twitter Client", response.toString());
@@ -190,11 +190,6 @@ public class ComposeActivity extends AppCompatActivity {
 
 
                 });
-
-
-
-
-
 
 
             }
