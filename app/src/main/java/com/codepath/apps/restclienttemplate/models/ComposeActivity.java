@@ -95,11 +95,12 @@ public class ComposeActivity extends AppCompatActivity {
                         Intent data = new Intent();
 
                         Tweet tweet = Tweet.fromJSON(response);
-                        data.putExtra("tweet", tweet);
+                        data.putExtra("response", tweet);
                         data.putExtra("someName", "someBody");
                         //data.putExtra(USER_KEY, tweet.user);
                         // data.putExtra(USER_KEY, tweet.user);
                         setResult(RESULT_OK, data); // set result code and bundle data for response
+                        finish();
 
                     } catch (JSONException e) {
                         e.printStackTrace();

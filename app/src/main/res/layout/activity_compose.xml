@@ -78,6 +78,7 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/ivProfileImage"
         android:width="60dp"
+        android:gravity="bottom"
         android:onClick="onEditTweet"
         android:text="What's happening?"
         android:textAlignment="textStart"

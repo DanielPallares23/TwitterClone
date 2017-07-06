@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,5 +73,12 @@ public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAd
     public void onItemSelected(View view, int position) {
         Tweet tweet = tweets.get(position);
         ((TweetSelectedListener) getActivity()).onTweetSelected(tweet);
+    }
+
+    public void addItem(Tweet tweet) {
+        tweets.add(0, tweet);
+        tweetdAdapter.notifyDataSetChanged();
+        Log.d("Working", "You just tweeted", null);
+        rvTweets.getLayoutManager().scrollToPosition(0);
     }
 }

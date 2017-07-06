@@ -11,19 +11,21 @@ import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.fragments.TweetsListFragment;
 import com.codepath.apps.restclienttemplate.fragments.TweetsPagerAdapter;
+import com.codepath.apps.restclienttemplate.models.ComposeActivity;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 
-public class TimelineActivity extends AppCompatActivity implements TweetsListFragment.TweetSelectedListener{
+public class TimelineActivity extends AppCompatActivity implements TweetsListFragment.TweetSelectedListener {
 
 
     final int REQUEST_CODE = 20;
+    TweetsPagerAdapter pagerAdapter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
-
+        pagerAdapter = new TweetsPagerAdapter(getSupportFragmentManager(), this);
         // get the view pager
         ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);
         // set the adapter for the pager
@@ -37,6 +39,19 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_timeline, menu);
         return true;
+    }
+
+    public void onCompose(MenuItem item) {
+        Intent i = new Intent(this, ComposeActivity.class);
+        startActivityForResult(i, 20);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Intent i = data;
+        if (i != null) {
+            Tweet tweet = i.getParcelableExtra("response");
+            ((TweetsListFragment) pagerAdapter.getItem(0)).addItem(tweet);
+        }
     }
 
     public void onProfileView(MenuItem item) {
@@ -83,7 +98,7 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
             tweets.add(0, tweet);
             tweetdAdapter.notifyItemInserted(0);
             rvTweets.scrollToPosition(0);*/
-            // Toast the name to display temporarily on screen
+    // Toast the name to display temporarily on screen
        /* }
 
     }*/

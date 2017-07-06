@@ -41,9 +41,6 @@ public class HomeTimelineFragment extends TweetsListFragment {
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 //            Log.d("Twitter Client", response.toString());
                 addItems(response);
-
-
-
             }
 
             @Override
