@@ -77,7 +77,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         holder.onClick(holder.btFavorite);
 
 
-        Glide.with(context).load(tweet.user.profileImageUrl).into(holder.ivProfileImage);
+        Glide.with(context).load(tweet.user.profileImageUrl)
+                .into(holder.ivProfileImage);
 
 
     }
@@ -135,15 +136,12 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             Log.d("Working", "onClick");
             ivProfileImage.setOnClickListener(this);
 
-            switch (v.getId()) {
-                default:
-                    //Toast.makeText(v.getContext(), "You have attempted to access an unsupported feature", Toast.LENGTH_LONG).show();
-                    break;
-                case R.id.ivProfileImage:
-                    Intent i = new Intent(context, ProfileActivity.class);
-                    i.putExtra("screen_name", getScreenName());
-                    context.startActivity(i);
-                    break;
+
+
+            if (v.getId() == ivProfileImage.getId()) {
+                Intent i = new Intent(context, ProfileActivity.class);
+                i.putExtra("screen_name", getScreenName());
+                context.startActivity(i);
             }
 
 
@@ -196,5 +194,10 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             }
             return "";
         }
+    }
+
+    public void clear(){
+        mTweets.clear();
+        notifyDataSetChanged();
     }
 }

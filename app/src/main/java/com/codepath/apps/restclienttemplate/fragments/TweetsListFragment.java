@@ -29,7 +29,6 @@ public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAd
     ArrayList<Tweet> tweets;
     RecyclerView rvTweets;
 
-
     public interface TweetSelectedListener {
         // handle tweet selection
         public void onTweetSelected(Tweet tweet);
