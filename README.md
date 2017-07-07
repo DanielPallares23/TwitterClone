@@ -1,13 +1,22 @@
+<<<<<<< HEAD
 # Project 4 - Twitter
 
 Twitter is an android app that allows a user to view home and mentions timelines, view user profiles with user timelines, as well as compose and post a new tweet. The app utilizes [Twitter REST API](https://dev.twitter.com/rest/public).
 
 Time spent: **50** hours spent in total
+=======
+# Project 3 - *Name of App Here*
+
+**Name of your app** is an android app that allows a user to view his Twitter timeline and post a new tweet. The app utilizes [Twitter REST API](https://dev.twitter.com/rest/public).
+
+Time spent: **X** hours spent in total
+>>>>>>> 3c49ddec46737862b4fa4490eba9ecf293d67fff
 
 ## User Stories
 
 The following **required** functionality is completed:
 
+<<<<<<< HEAD
 * [x] User can **sign in to Twitter** using OAuth login process
 * [x] User can **view the tweets from their home timeline**
 * [x] RecyclerView is used to display listings of any tweets
